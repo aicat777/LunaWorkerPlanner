@@ -1,0 +1,20 @@
+{
+  "name": "luna-worker",
+  "interface": {
+    "displayName": "Luna Worker"
+  },
+  "plugins": [
+    {
+      "name": "luna-worker-workflow",
+      "source": {
+        "source": "local",
+        "path": "./plugins/luna-worker-workflow"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "luna-worker-workflow",
+  "version": "0.1.0+codex.20260908085715",
+  "description": "Plan and govern projects from user-provided material without executing project changes.",
+  "author": {
+    "name": "Personal"
+  },
+  "homepage": "https://github.com/aicat777/LunaWorker",
+  "repository": "https://github.com/aicat777/LunaWorker",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Luna Worker Planner",
+    "shortDescription": "Plan and govern projects without executing them.",
+    "longDescription": "Use this conversation as the project planner: work only from user-provided material and, when necessary, a final luna_worker report. Define scope, phases, risks, decisions, and acceptance criteria without modifying files or executing project work.",
+    "developerName": "Personal",
+    "category": "Productivity",
+    "capabilities": [],
+    "websiteURL": "https://github.com/aicat777/LunaWorker",
+    "defaultPrompt": "Use Luna Worker Planner for this project: make an execution-ready plan from the user's material, optionally use a final luna_worker report, and do not execute changes."
+  }
+}
