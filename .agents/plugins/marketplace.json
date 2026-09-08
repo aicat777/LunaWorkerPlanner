@@ -1,14 +1,14 @@
 {
-  "name": "luna-worker",
+  "name": "luna-worker-planner",
   "interface": {
-    "displayName": "Luna Worker"
+    "displayName": "Luna Worker Planner"
   },
   "plugins": [
     {
-      "name": "luna-worker-workflow",
+      "name": "luna-worker-planner",
       "source": {
         "source": "local",
-        "path": "./plugins/luna-worker-workflow"
+        "path": "./plugins/luna-worker-planner"
       },
       "policy": {
         "installation": "AVAILABLE",

@@ -1,13 +1,14 @@
 {
-  "name": "luna-worker-workflow",
-  "version": "0.1.0+codex.20260908094104",
+  "name": "luna-worker-planner",
+  "version": "0.1.0+codex.20260908095345",
   "description": "Plan and govern projects while adaptively delegating inspection, verification, and implementation to luna_worker.",
   "author": {
     "name": "aicat777",
+    "email": "aicat777@163.com",
     "url": "https://github.com/aicat777"
   },
-  "homepage": "https://github.com/aicat777/LunaWorker",
-  "repository": "https://github.com/aicat777/LunaWorker",
+  "homepage": "https://github.com/aicat777/LunaWorkerPlanner",
+  "repository": "https://github.com/aicat777/LunaWorkerPlanner",
   "skills": "./skills/",
   "interface": {
     "displayName": "Luna Worker Planner",
@@ -16,7 +17,7 @@
     "developerName": "aicat777",
     "category": "Productivity",
     "capabilities": [],
-    "websiteURL": "https://github.com/aicat777/LunaWorker",
+    "websiteURL": "https://github.com/aicat777/LunaWorkerPlanner",
     "defaultPrompt": "Use Luna Worker Planner to plan directly when possible and delegate any needed project inspection, verification, or implementation to luna_worker. Wait for each final result and govern follow-up without executing project work in the parent."
   }
 }

@@ -1,5 +1,5 @@
 ---
-name: luna-worker-workflow
+name: luna-worker-planner
 description: Use when Luna Worker Planner is selected to plan and govern a project while adaptively delegating any needed inspection, verification, implementation, or other project work to the configured luna_worker; the parent conversation never executes project work directly.
 ---
 
