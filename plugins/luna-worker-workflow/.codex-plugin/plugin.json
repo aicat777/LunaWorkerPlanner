@@ -1,9 +1,10 @@
 {
   "name": "luna-worker-workflow",
-  "version": "0.1.0+codex.20260908085715",
+  "version": "0.1.0+codex.20260908090642",
   "description": "Plan and govern projects from user-provided material without executing project changes.",
   "author": {
-    "name": "Personal"
+    "name": "aicat777",
+    "url": "https://github.com/aicat777"
   },
   "homepage": "https://github.com/aicat777/LunaWorker",
   "repository": "https://github.com/aicat777/LunaWorker",
