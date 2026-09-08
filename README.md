@@ -14,9 +14,7 @@ codex plugin marketplace add https://github.com/aicat777/LunaWorker.git
 codex plugin add luna-worker-workflow@luna-worker
 ```
 
-将仓库中的 `agents/luna-worker.toml` 放入当前设备的 `~/.codex/agents/luna-worker.toml`，然后重新打开一个 Codex 对话。
-
-在对话中选择 `@Luna Worker Planner`。当项目上下文不足时，规划师会自动调用 `luna_worker` 做一次只读项目侦察，等待最终报告后再制定计划；规划师本身不执行项目变更。
+将仓库中的 `agents/luna-worker.toml` 放入当前设备的 `~/.codex/agents/luna-worker.toml`。安装完成后重新打开一个 Codex 对话，并选择 `@Luna Worker Planner`。
 
 ## 更新
 

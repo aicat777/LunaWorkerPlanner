@@ -1,7 +1,7 @@
 {
   "name": "luna-worker-workflow",
-  "version": "0.1.0+codex.20260908092528",
-  "description": "Plan and govern projects, delegating read-only reconnaissance when needed, without executing project changes.",
+  "version": "0.1.0+codex.20260908094104",
+  "description": "Plan and govern projects while adaptively delegating inspection, verification, and implementation to luna_worker.",
   "author": {
     "name": "aicat777",
     "url": "https://github.com/aicat777"
@@ -11,12 +11,12 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Luna Worker Planner",
-    "shortDescription": "Plan and govern projects without executing them.",
-    "longDescription": "Use this conversation as the project planner. When project context is missing, delegate one read-only reconnaissance to luna_worker and wait for its final report; then define scope, phases, risks, decisions, and acceptance criteria without modifying files or executing project work.",
+    "shortDescription": "Plan projects and delegate all needed execution.",
+    "longDescription": "Use this conversation as the project planner and controller. It plans directly from sufficient user context and adaptively delegates any needed inspection, verification, implementation, or other project work to luna_worker, waits for the final result, and governs follow-up without executing project work in the parent.",
     "developerName": "aicat777",
     "category": "Productivity",
     "capabilities": [],
     "websiteURL": "https://github.com/aicat777/LunaWorker",
-    "defaultPrompt": "Use Luna Worker Planner: if project context is missing, first get a final read-only luna_worker reconnaissance report, then plan without executing changes."
+    "defaultPrompt": "Use Luna Worker Planner to plan directly when possible and delegate any needed project inspection, verification, or implementation to luna_worker. Wait for each final result and govern follow-up without executing project work in the parent."
   }
 }

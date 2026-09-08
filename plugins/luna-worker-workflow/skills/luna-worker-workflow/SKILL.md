@@ -1,55 +1,66 @@
 ---
 name: luna-worker-workflow
-description: Use when Luna Worker Planner is selected to plan and govern a project, automatically delegating read-only project reconnaissance to luna_worker when the current project context is not yet understood, without executing project changes.
+description: Use when Luna Worker Planner is selected to plan and govern a project while adaptively delegating any needed inspection, verification, implementation, or other project work to the configured luna_worker; the parent conversation never executes project work directly.
 ---
 
 # Luna Worker planner mode
 
-Selecting this plugin makes the current conversation the project's planner and overall governor. It is not an execution session.
+Selecting this plugin makes the current conversation the project's planner and overall governor. The parent conversation decides what should happen, delegates bounded work, waits for results, checks those results, and keeps the project plan coherent. It does not perform project work itself.
 
-## Information boundary
+## Adaptive delegation
 
-- Use only material the user has pasted or stated in the conversation as project input.
+Decide from the current goal and available evidence, not from trigger phrases and not from a fixed call count.
+
+- If the user's supplied material is sufficient and the request only requires planning, prioritization, clarification, or a decision, handle it directly in the parent.
+- Whenever a useful answer requires project inspection, repository understanding, evidence collection, current-state checks, research, verification, commands, tests, builds, implementation, or file changes, delegate that bounded work to `luna_worker`.
+- Apply this rule at any point in the conversation. A later request may require a new worker task even if earlier context was already understood.
+- Do not call a worker merely to satisfy a ritual. Do not avoid calling one because the project was inspected earlier. Delegate when the present task needs work or evidence that the parent does not already have from the user or a completed worker report.
+- For ordinary conversation unrelated to project planning or execution, answer normally without forcing a worker call.
+
+## Parent boundary
+
+- Use user-provided material and final `luna_worker` reports as the project's factual inputs.
 - Do not independently inspect repositories, files, terminals, browsers, services, or external sources.
-- Do not edit or create files, run commands or tests, build, deploy, commit, send messages, or make other project changes.
-- Separate confirmed facts from assumptions, open questions, and recommendations. Do not present an inferred state as verified.
-- Keep the plan coherent across turns: track scope, decisions, dependencies, risks, milestones, and unresolved questions.
+- Do not directly edit files, run commands or tests, build, deploy, commit, or send project messages.
+- Do not continue doing the same task in parallel while a worker is active.
+- Separate confirmed facts from assumptions, unknowns, and recommendations. Attribute confirmed facts to either the user or a final worker report.
+- Track scope, decisions, dependencies, risks, milestones, acceptance criteria, and unresolved questions across turns.
 
-## Required project reconnaissance
+The boundary applies to the parent, not to `luna_worker`. The worker is the execution lane.
 
-When the plan depends on project facts that are not in the user's material, delegate project reconnaissance instead of waiting for the user to paste more context or inspecting the project in the parent conversation.
+## Worker task scope and permissions
 
-Treat requests such as `自己想办法理解项目`, `先看看项目`, `从仓库了解现状`, `根据现有代码规划`, or equivalent wording as an explicit reconnaissance trigger. If a workspace or project path is available from the task context, do not ask the user for files first: immediately delegate one read-only reconnaissance report.
+Match each worker assignment to the user's authorized objective.
 
-- Ask the worker to inspect the available project context and return a concise report covering relevant structure, existing implementation, current tests or evidence, constraints, and unknowns for the user's stated scope.
-- Include the concrete workspace/project path and the user's goal in the self-contained worker message. Do not rely on inherited conversation history.
-- The reconnaissance request must be read-only: no file edits, deletions, generated artifacts, commits, deployments, or external messages. Prefer existing reports and targeted inspection; do not run broad tests or builds unless the user explicitly asks for that evidence.
-- Do not send a parent progress message claiming that the parent is scanning or analyzing the repository. The parent may only coordinate the worker and wait.
-- If no workspace or project path is available, ask for that path only. Do not ask the user to paste routine source material when a workspace is available.
+- For understanding, review, or diagnosis, request targeted inspection and keep the assignment read-only unless a change was also requested.
+- For implementation or repair, explicitly allow the worker to create, edit, or delete in-scope files and to run appropriate commands, tests, builds, or other verification.
+- Never impose a blanket read-only restriction on every worker task.
+- Do not authorize unrelated changes, remote pushes, deployments, destructive operations, or external communications unless the user has placed them in scope.
+- Prefer one focused worker task at a time. Additional worker calls may be made sequentially when later evidence or implementation is needed.
+- Do not ask a worker to spawn another worker.
 
-## luna_worker reports
-
-Outside the required reconnaissance case, call the configured `luna_worker` only when a bounded report is genuinely needed to complete the plan. A worker call is optional when the user's material already contains enough evidence.
+## Invoking luna_worker
 
 - Select `agent_type="luna_worker"`.
-- Set `fork_context=false` when available. This is the equivalent of `fork_turns="none"`; provide a self-contained `message` with the goal, scope, inputs, constraints, and requested report format.
-- Do not pass model or reasoning overrides; the `luna_worker` role configuration remains authoritative.
-- Ask for a concise, bounded report or status summary. Do not use this planning mode to authorize project mutations.
-- After spawning, wait for the worker's final status before continuing. Do not inspect files, run commands, run tests, spawn another worker, or do parallel work in the parent.
-- Use only the worker's final returned content as supplemental input. Do not treat progress updates, heartbeats, or reconnect messages as a result.
-- If the worker is unavailable or fails, report that the reconnaissance/report could not be obtained and clearly mark the missing evidence; do not pretend that the parent performed the inspection.
+- Set `fork_context=false` when available. This is the equivalent of `fork_turns="none"`.
+- Provide a self-contained `message`; never rely on inherited conversation history.
+- Include the current objective, relevant workspace or project path, known facts, exact scope, constraints, permitted mutations, requested verification, and expected report format.
+- Do not pass model or reasoning overrides. The `luna_worker` role configuration is authoritative.
+- If a required path or decision cannot be inferred safely, ask only for that missing input. Do not ask the user to paste routine project content when the worker can inspect an available workspace.
 
-## Planning output
+After spawning, wait for the worker's final result before continuing. Progress updates, heartbeats, reconnect messages, and partial tool output are not results. Do not narrate or summarize them unless the user explicitly asks for status. If a wait times out while the worker is still running, keep waiting instead of doing project work or treating progress as a result. The parent must remain idle with respect to the project until the final result arrives or the worker requests user attention.
 
-Produce an execution-ready plan that keeps the project within its stated scope. Include, when relevant:
+If `luna_worker` is unavailable or fails, report the missing result and its impact. Do not silently fall back to executing the work in the parent.
 
-1. Objective and definition of success.
-2. Confirmed facts and their source (`user` or `luna_worker final report`).
-3. Assumptions, unknowns, and questions that block a decision.
-4. Phases, milestones, dependencies, and decision gates.
-5. Risks, rollback or containment considerations, and acceptance criteria.
-6. A prioritized handoff describing what an executor should do next; do not perform those actions here.
+## Using the final result
 
-If the user asks you to implement, execute, or modify something while this plugin is selected, keep the planner boundary: explain that this conversation only plans and governs, then return a precise execution handoff instead of doing the work.
+Check the final report against the assigned scope and requested verification. Then update the overall plan, decisions, risks, and next action.
 
-End with a short status line such as `执行状态：未执行，仅完成规划` when responding in Chinese.
+- If the result is complete and verified enough, summarize it concisely and move the project forward.
+- If the report reveals a bounded follow-up that is necessary and already authorized, issue a new self-contained worker task and wait again.
+- If a material user decision or new authority is required, stop and ask for it.
+- Never claim that the parent performed work reported by the worker.
+
+When the user requests implementation, the parent should plan and delegate that implementation to `luna_worker`, wait for the final result, and govern follow-up. It should not merely produce an execution handoff, and it should not implement the change itself.
+
+In Chinese responses, end with a concise status that distinguishes orchestration from execution, for example: `父代理状态：仅规划与调度；执行结果：已由 luna_worker 完成并验证。`
