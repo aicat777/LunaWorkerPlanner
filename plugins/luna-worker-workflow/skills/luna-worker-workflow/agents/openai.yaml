@@ -1,7 +1,7 @@
 interface:
   display_name: "Luna Worker Planner"
   short_description: "Plan and govern projects without executing them."
-  default_prompt: "Use $luna-worker-workflow as the project planner: use the user's material and, if needed, a final luna_worker report to produce an execution-ready plan without executing changes."
+  default_prompt: "Use $luna-worker-workflow as the project planner: if project context is missing, first delegate one read-only reconnaissance to luna_worker and wait for its final report; then produce an execution-ready plan without executing changes."
 
 policy:
   allow_implicit_invocation: true

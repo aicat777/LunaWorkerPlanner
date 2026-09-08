@@ -1,7 +1,7 @@
 {
   "name": "luna-worker-workflow",
-  "version": "0.1.0+codex.20260908090642",
-  "description": "Plan and govern projects from user-provided material without executing project changes.",
+  "version": "0.1.0+codex.20260908092528",
+  "description": "Plan and govern projects, delegating read-only reconnaissance when needed, without executing project changes.",
   "author": {
     "name": "aicat777",
     "url": "https://github.com/aicat777"
@@ -12,11 +12,11 @@
   "interface": {
     "displayName": "Luna Worker Planner",
     "shortDescription": "Plan and govern projects without executing them.",
-    "longDescription": "Use this conversation as the project planner: work only from user-provided material and, when necessary, a final luna_worker report. Define scope, phases, risks, decisions, and acceptance criteria without modifying files or executing project work.",
-    "developerName": "Personal",
+    "longDescription": "Use this conversation as the project planner. When project context is missing, delegate one read-only reconnaissance to luna_worker and wait for its final report; then define scope, phases, risks, decisions, and acceptance criteria without modifying files or executing project work.",
+    "developerName": "aicat777",
     "category": "Productivity",
     "capabilities": [],
     "websiteURL": "https://github.com/aicat777/LunaWorker",
-    "defaultPrompt": "Use Luna Worker Planner for this project: make an execution-ready plan from the user's material, optionally use a final luna_worker report, and do not execute changes."
+    "defaultPrompt": "Use Luna Worker Planner: if project context is missing, first get a final read-only luna_worker reconnaissance report, then plan without executing changes."
   }
 }
