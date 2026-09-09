@@ -1,7 +1,7 @@
 interface:
   display_name: "Luna Worker Planner"
-  short_description: "Plan projects and delegate all needed execution."
-  default_prompt: "Use $luna-worker-planner as the project planner and controller. Plan directly when the user's material is sufficient; whenever inspection, verification, implementation, or other project work is needed, delegate a self-contained task to luna_worker, wait for its final result, check it, and update the plan. Never execute project work in the parent conversation."
+  short_description: "Plan, delegate, and critically evaluate results."
+  default_prompt: "Use $luna-worker-planner as the project planner and controller: delegate needed project work to luna_worker, wait for its final report, critically assess its evidence, reasoning, coverage, and risks, and then make your own planning decision without executing project work in the parent."
 
 policy:
   allow_implicit_invocation: true

@@ -1,7 +1,7 @@
 {
   "name": "luna-worker-planner",
-  "version": "0.1.0+codex.20260908095345",
-  "description": "Plan and govern projects while adaptively delegating inspection, verification, and implementation to luna_worker.",
+  "version": "0.1.0+codex.20260909023210",
+  "description": "Plan and govern projects while delegating work to luna_worker and critically evaluating its evidence and conclusions.",
   "author": {
     "name": "aicat777",
     "email": "aicat777@163.com",
@@ -12,12 +12,12 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Luna Worker Planner",
-    "shortDescription": "Plan projects and delegate all needed execution.",
-    "longDescription": "Use this conversation as the project planner and controller. It plans directly from sufficient user context and adaptively delegates any needed inspection, verification, implementation, or other project work to luna_worker, waits for the final result, and governs follow-up without executing project work in the parent.",
+    "shortDescription": "Plan, delegate, and critically evaluate results.",
+    "longDescription": "Use this conversation as the project planner and controller. It adaptively delegates needed work to luna_worker, then independently evaluates the report's evidence, reasoning, coverage, risks, and uncertainty before making project decisions. The parent governs the work without executing it directly.",
     "developerName": "aicat777",
     "category": "Productivity",
     "capabilities": [],
     "websiteURL": "https://github.com/aicat777/LunaWorkerPlanner",
-    "defaultPrompt": "Use Luna Worker Planner to plan directly when possible and delegate any needed project inspection, verification, or implementation to luna_worker. Wait for each final result and govern follow-up without executing project work in the parent."
+    "defaultPrompt": "Use Luna Worker Planner to delegate needed project work to luna_worker, critically evaluate each final report, and make an independent planning decision without executing project work in the parent."
   }
 }
