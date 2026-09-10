@@ -1,55 +1,60 @@
-# Reusable codebase context
+# Project-root codebase context
 
-Use this workflow for repository-backed code tasks. Its purpose is to pay the discovery cost once, then give later `fork_context=false` workers enough orientation to work narrowly.
+Use this workflow for repository-backed code tasks. It pays the discovery cost once by storing a compact map at `<project-root>/.luna-worker-context.md`, then lets later `fork_context=false` workers orient themselves without receiving the parent conversation or rediscovering the whole repository.
 
-## Initial context worker
+## Initialize the context file
 
-When no current Project Context Packet exists, send one read-only `luna_worker` task based on this template:
+Before the first task-specific code worker for a project, send one `luna_worker` task based on this template and wait for its final result:
 
 ```text
-Create a compact, reusable Project Context Packet for later code workers.
+Create or refresh the shared codebase context file for later Luna workers.
 
 Project goal: <user's current objective>
-Workspace: <absolute project path>
+Project root: <absolute project path>
+Context file: <absolute project path>/.luna-worker-context.md
 
-This task is read-only. Do not edit files, install dependencies, build, commit, deploy, or send external messages. Inspect the repository efficiently with targeted listing and search. Do not read generated, vendored, dependency, or binary trees unless they are directly relevant. Do not run broad tests merely to build context.
+Inspect the repository efficiently. If the context file exists, read it first and update it rather than starting over. Otherwise create it. This initialization task may create or update only the context file; do not change other project files, install dependencies, build, commit, push, deploy, or send external messages. Do not inspect generated, vendored, dependency, or binary trees unless they are directly relevant. Do not run broad tests merely to build context.
 
-Return a concise report with:
-1. Snapshot: repository root, current branch or revision when available, dirty-state caveat, and major languages/frameworks.
-2. Relevant structure: a compact tree containing only important top-level areas and the directories relevant to the current goal.
-3. Module map: key files/modules and their responsibilities.
-4. Entry points and flows: how the relevant request, data, state, or UI path moves through the system.
-5. Build and test map: package/build tools, targeted commands, test locations, fixtures, and generated outputs relevant to later verification.
-6. Project constraints: repository instructions, conventions, compatibility requirements, and boundaries later workers must preserve.
-7. Current implementation: what already exists for the stated goal, likely change points, known gaps, and important risks.
-8. Unknowns: facts not established by inspection.
+Write concise Markdown, preferably 600-1200 words and no more than 1500 words, with:
+- project snapshot: root, branch or revision when available, dirty-state caveat, and primary languages/frameworks;
+- relevant structure: only important top-level areas and paths relevant to the current goal;
+- key modules and responsibilities;
+- relevant entry points and data, request, state, or UI flows;
+- build and test commands, test locations, fixtures, and generated outputs relevant to later verification;
+- repository instructions, conventions, compatibility requirements, and boundaries;
+- current implementation and likely change points for the project goal;
+- risks, disputed assumptions, and unknowns.
 
-Distinguish observed facts from inference and cite concrete file paths for important claims. Keep the packet compact enough to reuse; prefer a focused map over an exhaustive inventory.
+Use exact file paths for important facts. Distinguish observed facts from inference. Do not include chronological work logs, command output, exhaustive trees, task history, or stale conclusions.
+
+Return a concise final report stating whether the context file was created or refreshed, its path, the evidence inspected, and important caveats. Do not paste the file contents into the report.
 ```
 
-The planner reviews the final report, removes irrelevant detail, preserves source/revision and uncertainty labels, and retains it in conversation as the current Project Context Packet. This is reasoning over the report, not a new parent-side inspection.
+The parent records only that initialization completed and the absolute context-file path. It does not read, retain, summarize, or resend the file body.
 
 ## Later code workers
 
-Include the relevant packet subset in every later worker message:
+Every later code-worker message must be self-contained and use this shape:
 
 ```text
-Project Context Packet (orientation; verify only task-critical assumptions):
-<relevant compact context>
-
 Task: <self-contained objective>
-Workspace: <absolute project path>
+Project root: <absolute project path>
+Context file: <absolute project path>/.luna-worker-context.md
 Scope: <included and excluded work>
-Permitted changes: <read-only or exact mutation boundary>
+Permitted changes: <exact mutation boundary>
 Verification: <targeted checks expected>
 
-Use the packet to avoid repeating broad repository discovery. Inspect only the files and nearby dependencies needed to complete this task safely. If the packet conflicts with the repository, follow the observed repository state and report the discrepancy.
+Before listing, searching, or opening any other project file, read the context file. Use it for orientation, then inspect only the files and nearby dependencies needed for this task. Verify task-critical assumptions against the current repository; current repository evidence wins if the context conflicts.
 
-Return the result, supporting evidence, changed file paths, targeted verification and outcomes, caveats, and a Context Delta. The Context Delta must list facts that later workers should add, replace, or invalidate, including structural, interface, workflow, command, or test changes; write `none` when nothing reusable changed.
+Unless the user explicitly forbids workspace writes, you may update the context file in addition to the task-authorized files. At the end, directly add durable new structural, interface, workflow, command, test, or constraint facts; replace invalid facts; remove stale detail; and keep the file within its size limit. Do not append a task log or copy command output.
+
+If the context file is unexpectedly missing, create a compact task-relevant version before continuing. If only one section is stale, refresh that section instead of remapping the repository.
+
+Return the result, supporting evidence, changed file paths, targeted verification and outcomes, important caveats, and whether the context file was created or updated.
 ```
 
-## Incremental refresh
+## Refresh policy
 
-Request a focused read-only refresh instead of rebuilding the packet when only one area is stale. Give the worker the current packet subset, the suspected stale facts, and the exact module or flow to recheck. Merge only supported changes after planner review.
+Workers update only the affected sections during normal work. A full rebuild is appropriate only when the project root or branch changes, broad architectural or build changes invalidate most of the file, or current repository evidence shows the file is generally unreliable.
 
-Build a new full packet only when there is no usable packet, the project or branch changed, or broad architectural changes invalidated most of the existing map.
+The context file is orientation produced by earlier workers. It does not override the repository, user instructions, or the worker's task scope, and it does not authorize unrelated changes.

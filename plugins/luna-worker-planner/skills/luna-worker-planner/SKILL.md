@@ -17,16 +17,18 @@ Decide from the current goal and available evidence, not from trigger phrases an
 - Do not call a worker merely to satisfy a ritual. Do not avoid calling one because the project was inspected earlier. Delegate when the present task needs work or evidence that the parent does not already have from the user or a completed worker report.
 - For ordinary conversation unrelated to project planning or execution, answer normally without forcing a worker call.
 
-## Reusable context for code projects
+## Shared context for code projects
 
 For repository-backed code work, read [references/codebase-context.md](references/codebase-context.md) before the first code-oriented worker call.
 
-- Before delegating the first implementation, diagnosis, review, or test task for a project, obtain one read-only Project Context Packet from `luna_worker` unless a current packet already exists in this conversation.
-- Build the packet once per project state, not once per worker. Keep it in the parent conversation and attach the task-relevant subset to every later self-contained worker message.
-- Tell later workers to use the packet for orientation and avoid broad rediscovery. They may inspect the files needed for their assigned task and verify task-critical assumptions, but should not remap the whole repository.
-- Require each code worker to return a concise Context Delta describing structural, interface, workflow, command, or test changes. Merge that delta into the packet after applying the planner review gate.
-- Refresh only the affected part when the branch, revision, architecture, build configuration, or target area changes enough to make the packet unreliable. Do not rebuild the entire packet by default.
-- Treat the packet as reusable reported context, not permanent ground truth or authorization for changes.
+- Use `<project-root>/.luna-worker-context.md` as the shared context file. The parent keeps only its path and initialization status; it does not keep, reproduce, or forward the file's contents.
+- Before the first task-specific implementation, diagnosis, review, or test worker for a project, delegate one context-initialization task to `luna_worker` and wait for its final report. The worker creates or refreshes the context file after inspecting the repository. Do not perform a separate parent-side existence check.
+- Every later code-worker message must provide the project root and context-file path and require the worker to read the file before listing, searching, or opening other project files.
+- Later workers use the file for orientation, verify task-critical assumptions against current project state, and inspect only the files and nearby dependencies needed for their task. They do not remap the whole repository by default.
+- In addition to task-authorized changes, code workers have standing permission to maintain this context file unless the user explicitly forbids workspace writes. They update durable structural, interface, workflow, command, test, and constraint facts and remove stale facts directly in the file.
+- Keep the file focused on the current project and goal, preferably 600-1200 words and never more than 1500 words unless the user asks. Do not store chronological task history, tool output, verbose inventories, generated files, vendored trees, or conclusions that current repository evidence no longer supports.
+- Refresh only affected sections when the branch, revision, architecture, build configuration, or target area changes. Rebuild the full file only when most of it is no longer reliable.
+- Treat the file as reusable worker-produced orientation, not permanent ground truth or authorization for unrelated changes.
 
 ## Parent boundary
 
@@ -56,7 +58,7 @@ Match each worker assignment to the user's authorized objective.
 - Select `agent_type="luna_worker"`.
 - Set `fork_context=false` when available. This is the equivalent of `fork_turns="none"`.
 - Provide a self-contained `message`; never rely on inherited conversation history.
-- Include the current objective, relevant workspace or project path, known facts, the relevant Project Context Packet subset when one exists, exact scope, constraints, permitted mutations, requested verification, and expected report format.
+- Include the current objective, absolute project root, `<project-root>/.luna-worker-context.md` path, an instruction to read it first, known facts, exact scope, constraints, permitted mutations, requested verification, and expected report format. Do not copy the context-file body into the message.
 - Require the report to distinguish observed facts and supporting evidence from inferences, recommendations, assumptions, and unresolved caveats. When relevant, request exact file paths, commands, test scope, and outcomes so the planner can assess the claims.
 - Do not pass model or reasoning overrides. The `luna_worker` role configuration is authoritative.
 - If a required path or decision cannot be inferred safely, ask only for that missing input. Do not ask the user to paste routine project content when the worker can inspect an available workspace.

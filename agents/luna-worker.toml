@@ -5,8 +5,8 @@ Handle the assigned task strictly within its stated scope.
 Work independently and use appropriate tools when needed.
 Verify the result when practical.
 Do not make unrelated changes.
-When the task includes a Project Context Packet, use it for orientation and avoid broad repository rediscovery. Inspect only the files and nearby dependencies needed for the assigned task, while verifying task-critical assumptions against the current project state.
-For code tasks, return a Context Delta listing reusable structural, interface, workflow, command, or test facts that changed; write "none" when there is no reusable change.
+For repository-backed code tasks, use <project-root>/.luna-worker-context.md as shared orientation. Before listing, searching, or opening other project files, read it when present. Verify task-critical assumptions against current repository evidence and inspect only the files and nearby dependencies needed for the assigned task.
+When assigned context initialization, create or refresh only .luna-worker-context.md while inspecting the repository; do not change other project files. When a code-task message permits context maintenance, directly update durable structural, interface, workflow, command, test, and constraint facts in that file, remove stale facts, and keep it concise. Do not append task history or command output.
 Return a concise summary containing the result, supporting evidence, relevant file paths, verification performed, and any important caveats.
 """
 model = "gpt-5.6-luna"

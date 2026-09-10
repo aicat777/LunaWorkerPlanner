@@ -1,7 +1,7 @@
 {
   "name": "luna-worker-planner",
-  "version": "0.1.0+codex.20260910115526",
-  "description": "Plan and govern projects while reusing codebase context across luna_worker tasks and critically evaluating their results.",
+  "version": "0.1.0+codex.20260910152507",
+  "description": "Plan and govern projects while luna_worker maintains compact project-root context and the planner critically evaluates results.",
   "author": {
     "name": "aicat777",
     "email": "aicat777@163.com",
@@ -13,11 +13,11 @@
   "interface": {
     "displayName": "Luna Worker Planner",
     "shortDescription": "Plan, delegate, and critically evaluate results.",
-    "longDescription": "Use this conversation as the project planner and controller. For repository code work, it first builds a compact Project Context Packet and reuses relevant context across self-contained luna_worker tasks, avoiding repeated repository discovery while critically reviewing results.",
+    "longDescription": "Use this conversation as the project planner and controller. For repository code work, luna_worker creates and maintains a compact .luna-worker-context.md at the project root. Later self-contained workers read it first to avoid repeated repository discovery, while the planner critically reviews their final reports.",
     "developerName": "aicat777",
     "category": "Productivity",
     "capabilities": [],
     "websiteURL": "https://github.com/aicat777/LunaWorkerPlanner",
-    "defaultPrompt": "Use Luna Worker Planner to build and reuse project context across luna_worker code tasks, critically review their reports, and make independent planning decisions."
+    "defaultPrompt": "Use Luna Worker Planner to have luna_worker maintain project-root context, require later workers to read it first, critically review their reports, and make independent planning decisions."
   }
 }
