@@ -17,6 +17,17 @@ Decide from the current goal and available evidence, not from trigger phrases an
 - Do not call a worker merely to satisfy a ritual. Do not avoid calling one because the project was inspected earlier. Delegate when the present task needs work or evidence that the parent does not already have from the user or a completed worker report.
 - For ordinary conversation unrelated to project planning or execution, answer normally without forcing a worker call.
 
+## Reusable context for code projects
+
+For repository-backed code work, read [references/codebase-context.md](references/codebase-context.md) before the first code-oriented worker call.
+
+- Before delegating the first implementation, diagnosis, review, or test task for a project, obtain one read-only Project Context Packet from `luna_worker` unless a current packet already exists in this conversation.
+- Build the packet once per project state, not once per worker. Keep it in the parent conversation and attach the task-relevant subset to every later self-contained worker message.
+- Tell later workers to use the packet for orientation and avoid broad rediscovery. They may inspect the files needed for their assigned task and verify task-critical assumptions, but should not remap the whole repository.
+- Require each code worker to return a concise Context Delta describing structural, interface, workflow, command, or test changes. Merge that delta into the packet after applying the planner review gate.
+- Refresh only the affected part when the branch, revision, architecture, build configuration, or target area changes enough to make the packet unreliable. Do not rebuild the entire packet by default.
+- Treat the packet as reusable reported context, not permanent ground truth or authorization for changes.
+
 ## Parent boundary
 
 - Use user-provided material and final `luna_worker` reports as the project's factual inputs.
@@ -45,7 +56,7 @@ Match each worker assignment to the user's authorized objective.
 - Select `agent_type="luna_worker"`.
 - Set `fork_context=false` when available. This is the equivalent of `fork_turns="none"`.
 - Provide a self-contained `message`; never rely on inherited conversation history.
-- Include the current objective, relevant workspace or project path, known facts, exact scope, constraints, permitted mutations, requested verification, and expected report format.
+- Include the current objective, relevant workspace or project path, known facts, the relevant Project Context Packet subset when one exists, exact scope, constraints, permitted mutations, requested verification, and expected report format.
 - Require the report to distinguish observed facts and supporting evidence from inferences, recommendations, assumptions, and unresolved caveats. When relevant, request exact file paths, commands, test scope, and outcomes so the planner can assess the claims.
 - Do not pass model or reasoning overrides. The `luna_worker` role configuration is authoritative.
 - If a required path or decision cannot be inferred safely, ask only for that missing input. Do not ask the user to paste routine project content when the worker can inspect an available workspace.

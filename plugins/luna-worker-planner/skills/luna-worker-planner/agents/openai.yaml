@@ -1,7 +1,7 @@
 interface:
   display_name: "Luna Worker Planner"
   short_description: "Plan, delegate, and critically evaluate results."
-  default_prompt: "Use $luna-worker-planner as the project planner and controller: delegate project work to luna_worker, critically reason over its final report without independently inspecting the project, delegate any needed fact-checking, and then make your own planning decision."
+  default_prompt: "Use $luna-worker-planner as the project planner: for repository code work, first build and reuse a compact Project Context Packet across self-contained luna_worker tasks, then critically review their reports and make your own planning decisions."
 
 policy:
   allow_implicit_invocation: true
