@@ -21,14 +21,15 @@ Decide from the current goal and available evidence, not from trigger phrases an
 
 For repository-backed code work, read [references/codebase-context.md](references/codebase-context.md) before the first code-oriented worker call.
 
-- Use `<project-root>/.luna-worker-context.md` as the shared context file. The parent keeps only its path and initialization status; it does not keep, reproduce, or forward the file's contents.
-- Before the first task-specific implementation, diagnosis, review, or test worker for a project, delegate one context-initialization task to `luna_worker` and wait for its final report. The worker creates or refreshes the context file after inspecting the repository. Do not perform a separate parent-side existence check.
-- Every later code-worker message must provide the project root and context-file path and require the worker to read the file before listing, searching, or opening other project files.
-- Later workers use the file for orientation, verify task-critical assumptions against current project state, and inspect only the files and nearby dependencies needed for their task. They do not remap the whole repository by default.
-- In addition to task-authorized changes, code workers have standing permission to maintain this context file unless the user explicitly forbids workspace writes. They update durable structural, interface, workflow, command, test, and constraint facts and remove stale facts directly in the file.
-- Keep the file focused on the current project and goal, preferably 600-1200 words and never more than 1500 words unless the user asks. Do not store chronological task history, tool output, verbose inventories, generated files, vendored trees, or conclusions that current repository evidence no longer supports.
-- Refresh only affected sections when the branch, revision, architecture, build configuration, or target area changes. Rebuild the full file only when most of it is no longer reliable.
-- Treat the file as reusable worker-produced orientation, not permanent ground truth or authorization for unrelated changes.
+- Use `<project-root>/.luna-worker-context.md` as the shared context file. It contains exactly two kinds of information: a compact file tree and deduplicated explanations keyed by file path.
+- Before the first task-specific code worker for a project, delegate one context-initialization task to `luna_worker` and wait for its final report. The worker creates or refreshes the file; the parent does not perform a separate existence check.
+- The parent keeps only the context-file path and initialization status. It does not read, retain, reproduce, summarize, or forward the file body.
+- Every later code-worker message provides the project root and context-file path and requires the worker to read it before listing, searching, or opening other project files.
+- Later workers use the file for orientation and inspect only files needed for their assigned task. After the task, they update affected tree entries and add or revise concise explanations for files they directly inspected, created, changed, renamed, or deleted.
+- Each file explanation states the file's purpose, important contents or behavior, and relevant relationships in one to three short sentences. Do not infer an explanation from a filename alone, and do not create duplicate entries for the same path.
+- Remove deleted paths and stale explanations. Keep large, generated, vendored, dependency, cache, build-output, and binary trees collapsed or excluded.
+- Do not store task history, command or test output, project goals, progress, decisions, risks, architecture summaries, build instructions, repository constraints, or other general context in this file.
+- Context-file maintenance is allowed in addition to task-authorized changes unless the user explicitly forbids workspace writes. It does not authorize unrelated project changes.
 
 ## Parent boundary
 

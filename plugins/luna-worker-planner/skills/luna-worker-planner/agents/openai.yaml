@@ -1,7 +1,7 @@
 interface:
   display_name: "Luna Worker Planner"
   short_description: "Plan, delegate, and critically evaluate results."
-  default_prompt: "Use $luna-worker-planner as the project planner: for repository code work, have luna_worker maintain a compact .luna-worker-context.md at the project root, require later workers to read it first, and critically evaluate their final reports."
+  default_prompt: "Use $luna-worker-planner as the project planner: for repository code work, have luna_worker maintain only a compact file tree and per-file explanations in .luna-worker-context.md, require later workers to read it first, and critically evaluate their final reports."
 
 policy:
   allow_implicit_invocation: true
