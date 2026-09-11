@@ -1,6 +1,6 @@
 {
   "name": "luna-worker-planner",
-  "version": "0.1.0+codex.20260910153954",
+  "version": "0.1.0+codex.20260911030818",
   "description": "Plan and govern projects while luna_worker maintains a project file tree and per-file explanations for reuse.",
   "author": {
     "name": "aicat777",

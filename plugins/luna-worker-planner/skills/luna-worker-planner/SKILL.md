@@ -19,10 +19,10 @@ Decide from the current goal and available evidence, not from trigger phrases an
 
 ## Shared context for code projects
 
-For repository-backed code work, read [references/codebase-context.md](references/codebase-context.md) before the first code-oriented worker call.
+For repository-backed code work, apply the complete rules below. Do not read a plugin reference file to prepare this workflow.
 
-- Use `<project-root>/.luna-worker-context.md` as the shared context file. It contains exactly two kinds of information: a compact file tree and deduplicated explanations keyed by file path.
-- Before the first task-specific code worker for a project, delegate one context-initialization task to `luna_worker` and wait for its final report. The worker creates or refreshes the file; the parent does not perform a separate existence check.
+- Use `<project-root>/.luna-worker-context.md` as the shared context file. It uses exactly the headings `# Luna Worker File Index`, `## File tree`, and `## File explanations`; the body contains only a compact file tree and deduplicated explanations keyed by file path.
+- Before the first task-specific code worker for a project, delegate one self-contained context-initialization task to `luna_worker` and wait for its final report. Give it the absolute project root, context-file path, and current objective. Require it to read an existing context file first or create one, change no other file, and return only initialization status and the path without pasting the file body. The parent does not perform a separate existence check.
 - The parent keeps only the context-file path and initialization status. It does not read, retain, reproduce, summarize, or forward the file body.
 - Every later code-worker message provides the project root and context-file path and requires the worker to read it before listing, searching, or opening other project files.
 - Later workers use the file for orientation and inspect only files needed for their assigned task. After the task, they update affected tree entries and add or revise concise explanations for files they directly inspected, created, changed, renamed, or deleted.
